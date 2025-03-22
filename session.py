@@ -1,8 +1,10 @@
-import requests
+from tls_client import Session
 from polka import Polka
 from hashlib import sha256
 from gen_token import generate_token
 from gen_solution import encode_solution
+
+requests = Session(client_identifier="chrome124", random_tls_extension_order=True)
 
 
 class Pow:
@@ -32,32 +34,32 @@ class Prosopo:
             "cache-control": "no-cache",
             "content-type": "application/json",
             "dnt": "1",
-            "origin": "https://prosopo.io",
+            "origin": "https://www.twickets.live",
             "pragma": "no-cache",
             "priority": "u=1, i",
             "prosopo-site-key": self.site_key,
             "prosopo-user": self.user_key,
-            "referer": "https://prosopo.io/",
-            "sec-ch-ua": '"Not A(Brand";v="8", "Chromium";v="132", "Google Chrome";v="132"',
+            "referer": "https://www.twickets.live/",
+            "sec-ch-ua": '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"',
             "sec-ch-ua-mobile": "?0",
             "sec-ch-ua-platform": '"Windows"',
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-site",
             "sec-gpc": "1",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
         }
 
     def get_session_id(self):
-        response = requests.request(
+        response = requests.execute_request(
             method="POST",
-            url=f'{self.base_url}/provider/client/captcha/frictionless',
+            url=f"{self.base_url}/provider/client/captcha/frictionless",
             headers=self.default_headers,
             json={
                 "token": generate_token(),
                 "dapp": self.site_key,
-                "user": self.user_key
-            }
+                "user": self.user_key,
+            },
         )
 
         resp_body = response.json()
@@ -68,26 +70,28 @@ class Prosopo:
         return resp_body.get("sessionId")
 
     def get_challenge(self, session_id: str):
-        response = requests.request(
+        response = requests.execute_request(
             method="POST",
-            url=f'{self.base_url}/provider/client/captcha/pow',
+            url=f"{self.base_url}/provider/client/captcha/pow",
             headers=self.default_headers,
             json={
                 "user": self.user_key,
                 "dapp": self.site_key,
                 "sessionId": session_id,
-            }
+            },
         )
 
         resp_body = response.json()
 
-        if resp_body.get('status') != "ok":
+        if resp_body.get("status") != "ok":
             raise Exception("bad challenge received: ", resp_body)
 
         return resp_body
 
-    def submit_challenge(self, challenge_str: str, provider: str, signature: str, nonce: int):
-        response = requests.request(
+    def submit_challenge(
+        self, challenge_str: str, provider: str, signature: str, nonce: int
+    ):
+        response = requests.execute_request(
             method="POST",
             url=f"{self.base_url}/provider/client/pow/solution",
             headers=self.default_headers,
@@ -96,11 +100,9 @@ class Prosopo:
                 "difficulty": 4,
                 "signature": {
                     "user": {
-                        "timestamp": '0x'+signature,
+                        "timestamp": "0x" + signature,
                     },
-                    "provider": {
-                        "challenge": provider
-                    },
+                    "provider": {"challenge": provider},
                 },
                 "user": self.user_key,
                 "dapp": self.site_key,
@@ -110,8 +112,15 @@ class Prosopo:
         )
 
         print(response.json())
-    
-    def create_captcha_solution(self, challenge_str: str, provider: str, signature: str, timestamp: str, nonce: int):
+
+    def create_captcha_solution(
+        self,
+        challenge_str: str,
+        provider: str,
+        signature: str,
+        timestamp: str,
+        nonce: int,
+    ):
 
         return encode_solution(
             prosopo_url=f"https://{self.base_url.split('/')[2]}",
@@ -121,7 +130,7 @@ class Prosopo:
             provider=provider,
             signature=signature,
             timestamp=timestamp,
-            nonce=nonce
+            nonce=nonce,
         )
 
 
@@ -130,7 +139,7 @@ def main(site_key: str, visitor_id: str):
     signer.create_account()
     signer.seed_phrase()
     signer.create_keypair()
-    print(f'Your (ss58) address: {signer.address()}')
+    print(f"Your (ss58) address: {signer.address()}")
 
     captcha = Prosopo(
         site_key=site_key,
@@ -138,26 +147,26 @@ def main(site_key: str, visitor_id: str):
     )
     session_id = captcha.get_session_id()
     challenge = captcha.get_challenge(session_id)
-    nonce = Pow.checkPrefix(challenge['challenge'], challenge['difficulty'])
-    signature = signer.sign(challenge['timestamp'])
+    nonce = Pow.checkPrefix(challenge["challenge"], challenge["difficulty"])
+    signature = signer.sign(challenge["timestamp"])
 
     captcha.submit_challenge(
-        challenge['challenge'],
-        challenge['signature']['provider']['challenge'],
+        challenge["challenge"],
+        challenge["signature"]["provider"]["challenge"],
         signature,
-        nonce
+        nonce,
     )
 
     solution = captcha.create_captcha_solution(
-        challenge['challenge'],
-        challenge['signature']['provider']['challenge'],
+        challenge["challenge"],
+        challenge["signature"]["provider"]["challenge"],
         signature,
-        challenge['timestamp'],
-        nonce
+        challenge["timestamp"],
+        nonce,
     )
 
     print(solution)
 
 
 if __name__ == "__main__":
-    main('5C7bfXYwachNuvmasEFtWi9BMS41uBvo6KpYHVSQmad4nWzw', 'visitor id')
+    main("5EZVvsHMrKCFKp5NYNoTyDjTjetoVo1Z4UNNbTwJf1GfN6Xm", "visitor id")
