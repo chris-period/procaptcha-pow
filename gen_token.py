@@ -17,13 +17,13 @@ def Ax(a):
 
 def _encrypt_text(plain_text: str):
     public_key_base64 = """-----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtZnLYfVDeDrxEFF/Vwon
-    +tOjfUotjblyWyANYz7ZlM2wtkIiBehq/vY6dbrmOCH9Sy+tU3nfOgyS1aNZ0c9G
-    0ECmLD1LjyIWFzSi/GyRrA85HP6C0CVWNJPwhP9uhIpuotuYLczv5aGYGgqzLshZ
-    BsI6W/gj45KyWxFBPmLRYjwlGMUSJ077UuC1pqzoEfngKT5pRCdw7S7AICU6jtck
-    2bj4UaZQHKnzfwo8n7yY2JEv+PWW4vUuPevZoTVZF/qozMoHIpOzqgZQzw679fKZ
-    53YepkEkRPwT4xLSBN5LvUUDE2mtnjfgMBS3qd8jBeetKu5YZ89tzYyl+BFzTtZe
-    XwIDAQAB
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmEpX9Tqve86xUQcSCAX1
+    2S2XsivOzZYLe7BwhlkyLrc9tNN7OqHg8SEQA0z7RCvJPSvB5gfd0G/VHtMzDVH/
+    iNuaU3sz/4Vi4mVOG/dQ1C2R2AZYu581TCL2NFVZbNK79KhDjB9kXF6ufBsAU+W4
+    Hz7myBFBWHS5FNGf1QGSBDAPL1zsSaEv9HqDggMx5BH+1ibiU06aNobUpT179uIe
+    Uxf0yki3pNohIUQC8JChu4FgNYUZTBeZ1OYIV9bqzfZR3pQH7kssXlePH06d+dkb
+    e4k7xwu95/R5Nal5d2uA8iLO5bczJac+2whEHs1u+mUWgxBWmJXi4t9iwUvghaSI
+    KQIDAQAB
     -----END PUBLIC KEY-----
     """
 
