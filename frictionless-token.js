@@ -8,13 +8,14 @@ const Ax = (a) => {
 };
 
 async function encryptPlainText(...e) {
-    const publicKeyBytes = atob(`MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtZnLYfVDeDrxEFF/Vwon
-+tOjfUotjblyWyANYz7ZlM2wtkIiBehq/vY6dbrmOCH9Sy+tU3nfOgyS1aNZ0c9G
-0ECmLD1LjyIWFzSi/GyRrA85HP6C0CVWNJPwhP9uhIpuotuYLczv5aGYGgqzLshZ
-BsI6W/gj45KyWxFBPmLRYjwlGMUSJ077UuC1pqzoEfngKT5pRCdw7S7AICU6jtck
-2bj4UaZQHKnzfwo8n7yY2JEv+PWW4vUuPevZoTVZF/qozMoHIpOzqgZQzw679fKZ
-53YepkEkRPwT4xLSBN5LvUUDE2mtnjfgMBS3qd8jBeetKu5YZ89tzYyl+BFzTtZe
-XwIDAQAB`);
+    // new key (September 15, 2025) 
+    const publicKeyBytes = atob(`MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA78KXuYmPpOLaXdU3Rbmr
+P9xUZnNJ7Ykfec9fK4/i/rlJodoxkKub2ZvxkyAoESotxprTN2FhAABh3hnA6qY/
+GGszpaAghtUpnhU6WTHbN305Bdsk+FzrqYE3dxc7hgGaqYodz55OmuGdaomN2Mqs
+W7U3/Vk35Fa0DJpQel7DDdJU8JQKmaHJVSewOf+bxYw1RvM5a90US9pc2cqMExx/
+hYl294Xn0SDDUz0oYalG8hOgFT5rnfuc5inGqb+tQzljUBnvdDyQFYRvjnwZxRMM
+SLh46f2v0xvNfHVp7qXPMqLCXeqnsfU5tgBpuwxWFzI552HTfqw8NUaefY4xN9vn
+VQIDAQAB`);
 
     const publicKey = new Uint8Array(294);
 
