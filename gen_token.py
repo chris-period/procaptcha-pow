@@ -1,18 +1,12 @@
+import hashlib
+import secrets
 import time
-import math
 import random
 import json
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.Hash import SHA256
 from base64 import b64encode
-
-
-def Ax(a):
-    curr_time = int(time.time() * 1000)
-    pie = (curr_time % 1000 + a) / 999 * math.pi
-    pie -= math.pi / 2
-    return (curr_time, math.sin(pie) * 1000)
 
 
 def _encrypt_text(plain_text: str):
@@ -36,6 +30,31 @@ def _encrypt_text(plain_text: str):
     return b64encode(encrypted).decode()
 
 
-def generate_token():
-    c = Ax(min(random.random() * 0.3, 1))
-    return _encrypt_text(json.dumps(c))
+def hash_user_agent(s: str) -> str:
+    digest = hashlib.sha256(s.encode("utf-8")).hexdigest()
+    return digest[:32]
+
+
+def transform_float(f: float):
+    e = 0.4294846358501722
+    r = float(3)
+    c = float(1)
+
+    return e * f**2 + r * f + c
+
+
+def generate_html_hash(contents: str):
+    return _encrypt_text(contents)
+
+
+def generate_token(user_addr: str, user_agent: str):
+    rand_float = min(random.random() * 0.3, 1)
+    user_agent_encrypt = hash_user_agent(user_agent)
+    details = f'{user_addr}|{transform_float(rand_float)}|{user_agent_encrypt}|0|0'
+    a = secrets.randbits(16) % 2001
+    token = json.dumps(
+        obj=[int(time.time()*1000), details, a],
+        indent=None,
+        separators=(",", ":")
+    )
+    return _encrypt_text(token)
