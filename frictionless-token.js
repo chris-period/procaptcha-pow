@@ -9,13 +9,13 @@ const Ax = (a) => {
 
 async function encryptPlainText(...e) {
     // new key (September 15, 2025) 
-    const publicKeyBytes = atob(`MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA78KXuYmPpOLaXdU3Rbmr
-P9xUZnNJ7Ykfec9fK4/i/rlJodoxkKub2ZvxkyAoESotxprTN2FhAABh3hnA6qY/
-GGszpaAghtUpnhU6WTHbN305Bdsk+FzrqYE3dxc7hgGaqYodz55OmuGdaomN2Mqs
-W7U3/Vk35Fa0DJpQel7DDdJU8JQKmaHJVSewOf+bxYw1RvM5a90US9pc2cqMExx/
-hYl294Xn0SDDUz0oYalG8hOgFT5rnfuc5inGqb+tQzljUBnvdDyQFYRvjnwZxRMM
-SLh46f2v0xvNfHVp7qXPMqLCXeqnsfU5tgBpuwxWFzI552HTfqw8NUaefY4xN9vn
-VQIDAQAB`);
+    const publicKeyBytes = atob(`MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyGWbPYHCppJ2rtB1FMI1
+4kx0QwXAf96U5yIeNCPHmXcL7wrZ1TxejINR7Q7gsEzphWqQCpKhpvhdukofdKPA
+IoUAcYUZ4AK4lTzBn7KRo/KNszcB+8fceNk17eVUiR+yM2Qw60v1hIwj6kKMWaXl
+e4mvtDEVr6uZsaiMRNE8mo9Ojjf2On7gMP8FBCv7C8L7scsRHlq0CgSugdL3vtm7
+aT0HYq1mhVYQXKs+TGsEtwrGSORimYnzMIR8BDxIFsL+H6DaC0SXtPfH2RBw5/mL
+3U9t05k0xjDeQ0BvDuto1EdmAFFEPNExlCy7JbgkrNEMIfQtP/ytgazd+4UidQO/
+EwIDAQAB`);
 
     const publicKey = new Uint8Array(294);
 
