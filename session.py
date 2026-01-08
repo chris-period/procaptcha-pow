@@ -67,7 +67,7 @@ class Prosopo:
                 'dnt': '1',
                 'pragma': 'no-cache',
                 'priority': 'u=0, i',
-                'referer': 'https://www.twickets.live/en/event/1847033094909988864',
+                'referer': 'https://www.twickets.live/',
                 'sec-ch-ua': '"Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"',
                 'sec-ch-ua-mobile': '?0',
                 'sec-ch-ua-platform': '"Windows"',
@@ -211,7 +211,8 @@ def main(page_url: str, site_key: str, visitor_id: str):
 
 
 if __name__ == "__main__":
-    site_url = 'https://www.twickets.live/app/block/174375673873595,1'
+    site_url = 'https://www.twickets.live/app/block/640070387854481,2'
     site_key = '5EZVvsHMrKCFKp5NYNoTyDjTjetoVo1Z4UNNbTwJf1GfN6Xm'
-    visitor_id = 'visitor id'
+    # visitor_id = 'visitor id'
+    visitor_id = '1'*20
     main(site_url, site_key, visitor_id)

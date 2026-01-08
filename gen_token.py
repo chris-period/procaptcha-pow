@@ -11,13 +11,13 @@ from base64 import b64encode
 
 def _encrypt_text(plain_text: str):
     public_key_base64 = """-----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyGWbPYHCppJ2rtB1FMI1
-    4kx0QwXAf96U5yIeNCPHmXcL7wrZ1TxejINR7Q7gsEzphWqQCpKhpvhdukofdKPA
-    IoUAcYUZ4AK4lTzBn7KRo/KNszcB+8fceNk17eVUiR+yM2Qw60v1hIwj6kKMWaXl
-    e4mvtDEVr6uZsaiMRNE8mo9Ojjf2On7gMP8FBCv7C8L7scsRHlq0CgSugdL3vtm7
-    aT0HYq1mhVYQXKs+TGsEtwrGSORimYnzMIR8BDxIFsL+H6DaC0SXtPfH2RBw5/mL
-    3U9t05k0xjDeQ0BvDuto1EdmAFFEPNExlCy7JbgkrNEMIfQtP/ytgazd+4UidQO/
-    EwIDAQAB
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxoLSRWT/eNMWOs9oiCnq
+    Q8qQosbPpU0dwZpgBmv+kCFMbOdlyiaOcYfB9qLwTmMPXRW/C01kF8gw1AAjauZ4
+    mzxSb/Q8Su1cWfO8/gVFW8N1mvduuri6Vodak3T6kejoODctiv85FU2NJKng0nNO
+    WOCOLFD9qC2+sXzG3Vd6EyDtwcO9VmvdCin+jBODPg6WbBsvAfD8P1YfdrOg2L/v
+    KJpOScr4wUqhz/Zu7869OzYp9AfQHFAcxSyDy6p3PnAH/ZaTZJ2fYo7IEE7qDd6A
+    h/QQVcROBG0p9Lhm1NsLCmFtFIoyjGdY8EdTXwgSMrN69gdWpSrI/zcLV042t+5N
+    EQIDAQAB
     -----END PUBLIC KEY-----
     """
 
