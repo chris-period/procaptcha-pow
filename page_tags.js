@@ -6,7 +6,7 @@ const v = {
   vl픨o: 'esꇑr'
 };
 
-function B(...e) {
+function B__(...e) {
   return e[e['length'] - 1];
 }
 
@@ -19,7 +19,7 @@ function M0(...e) {
   let f = null;
   for (f = c["exec"](r); f !== null && 67 > -88;) {
     e[66] = 'includes';
-    const s = f[1]["toLowe" + "rCase"](), o = f[2], w = B(['meta', "link", "script"]['includes'](s) || e["onum"]["push"](`tag:${s}`), /(\w+)=["']([^"']+)["']/g);
+    const s = f[1]["toLowe" + "rCase"](), o = f[2], w = B__(['meta', "link", "script"]['includes'](s) || e["onum"]["push"](`tag:${s}`), /(\w+)=["']([^"']+)["']/g);
     let i = null;
     for (i = w["exec"](o); i !== null && v.dne䬣();) {
       const k = i[1]["toLowerCase"]();

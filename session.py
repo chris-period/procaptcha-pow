@@ -1,34 +1,13 @@
-# from tls_client import Session
-import asyncio
-from rnet import Client, Emulation, Proxy
+from page_tags import computeThing
+from tls_client import Session
 from polka import Polka
 from hashlib import sha256
 from gen_token import generate_token, generate_html_hash
 from gen_solution import encode_solution
 
 
-requests = Client(emulation=Emulation.Chrome143, http2_only=True, verify=False, orig_headers=[
-    "content-length",
-    "pragma",
-    "cache-control",
-    "sec-ch-ua-platform",
-    "sec-ch-ua",
-    "sec-ch-ua-mobile",
-    "prosopo-site-key",
-    "prosopo-user",
-    "dnt",
-    "content-type",
-    "user-agent",
-    "accept",
-    "origin",
-    "sec-fetch-site",
-    "sec-fetch-mode",
-    "sec-fetch-dest",
-    "referer",
-    "accept-encoding",
-    "accept-language",
-    "priority",
-],)
+requests = Session(client_identifier="chrome_120",
+                   random_tls_extension_order=True)
 
 
 class Pow:
@@ -48,13 +27,15 @@ class Pow:
 
 
 class Prosopo:
-    def __init__(self, site_key: str, user_key: str):
+    def __init__(self, page_url: str, site_key: str, user_key: str):
+        self.page_url = page_url
         self.site_key = site_key
         self.user_key = user_key
         self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36'
-        self.base_url = "https://pronode2.prosopo.io/v1/prosopo"
+        self.base_url = "https://pronode7.prosopo.io/v1/prosopo"
+        self.page_binary = None
 
-        self.default_headers = {
+        self.headers = {
             'pragma': 'no-cache',
             'cache-control': 'no-cache',
             'sec-ch-ua-platform': '"Windows"',
@@ -76,48 +57,82 @@ class Prosopo:
             'accept-language': 'en-US,en;q=0.9',
         }
 
-    async def get_session_id(self):
-        response = await requests.post(
-            url=f"{self.base_url}/provider/client/captcha/frictionless",
-            headers=self.default_headers,
-            proxy=Proxy.all(url="http://127.0.0.1:8888"),
-            json={
-                "token": generate_token(self.user_key, self.user_agent),
-                "headHash": generate_html_hash('01011110111001111110011100110001110111001110111111100111001100010101100110100111111101110011000110111100100111001011110111001011'),
-                "dapp": self.site_key,
-                "user": self.user_key,
-            },
+    def page_contents(self):
+        response = requests.get(
+            self.page_url,
+            headers={
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                'accept-language': 'en-US,en;q=0.9',
+                'cache-control': 'no-cache',
+                'dnt': '1',
+                'pragma': 'no-cache',
+                'priority': 'u=0, i',
+                'referer': 'https://www.twickets.live/en/event/1847033094909988864',
+                'sec-ch-ua': '"Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'document',
+                'sec-fetch-mode': 'navigate',
+                'sec-fetch-site': 'same-origin',
+                'sec-fetch-user': '?1',
+                'upgrade-insecure-requests': '1',
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36',
+
+            }
         )
 
-        resp_body = await response.json()
+        if response.status_code != 200:
+            raise Exception("bad response code from \"page_contents\"")
+
+        self.page_binary = computeThing(response.text)
+
+    def get_session_id(self):
+        head_hash = generate_html_hash(self.page_binary)
+
+        json_data = {
+            'token': generate_token(self.user_key, self.user_agent),
+            'headHash': head_hash,
+            'dapp': self.site_key,
+            'user': self.user_key,
+        }
+
+        response = requests.post(
+            url=f"{self.base_url}/provider/client/captcha/frictionless",
+            headers=self.headers,
+            json=json_data,
+        )
+
+        resp_body = response.json()
 
         if resp_body.get("captchaType") != "pow":
             raise Exception("bad captchaType received: ", resp_body)
 
         return resp_body.get("sessionId")
 
-    async def get_challenge(self, session_id: str):
-        response = await requests.post(
+    def get_challenge(self, session_id: str):
+        response = requests.post(
             url=f"{self.base_url}/provider/client/captcha/pow",
+            headers=self.headers,
             json={
-                "user": self.user_key,
                 "dapp": self.site_key,
                 "sessionId": session_id,
+                "user": self.user_key,
             },
         )
 
-        resp_body = await response.json()
+        resp_body = response.json()
 
         if resp_body.get("status") != "ok":
             raise Exception("bad challenge received: ", resp_body)
 
         return resp_body
 
-    async def submit_challenge(
+    def submit_challenge(
         self, challenge_str: str, provider: str, signature: str, nonce: int
     ):
-        response = await requests.post(
+        response = requests.post(
             url=f"{self.base_url}/provider/client/pow/solution",
+            headers=self.headers,
             json={
                 "challenge": challenge_str,
                 "difficulty": 4,
@@ -134,7 +149,7 @@ class Prosopo:
             },
         )
 
-        print(await response.json())
+        print(response.json())
 
     def create_captcha_solution(
         self,
@@ -157,7 +172,7 @@ class Prosopo:
         )
 
 
-async def main(site_key: str, visitor_id: str):
+def main(page_url: str, site_key: str, visitor_id: str):
     signer = Polka(visitor_id)
     signer.create_account()
     signer.seed_phrase()
@@ -167,20 +182,24 @@ async def main(site_key: str, visitor_id: str):
     captcha = Prosopo(
         site_key=site_key,
         user_key=signer.address(),
+        page_url=page_url,
     )
-    session_id = await captcha.get_session_id()
-    challenge = await captcha.get_challenge(session_id)
+    captcha.page_contents()
+
+    session_id = captcha.get_session_id()
+    challenge = captcha.get_challenge(session_id)
+    print('challenge:', challenge)
     nonce = Pow.checkPrefix(challenge["challenge"], challenge["difficulty"])
     signature = signer.sign(challenge["timestamp"])
 
-    await captcha.submit_challenge(
+    captcha.submit_challenge(
         challenge["challenge"],
         challenge["signature"]["provider"]["challenge"],
         signature,
         nonce,
     )
 
-    solution = await captcha.create_captcha_solution(
+    solution = captcha.create_captcha_solution(
         challenge["challenge"],
         challenge["signature"]["provider"]["challenge"],
         signature,
@@ -192,5 +211,7 @@ async def main(site_key: str, visitor_id: str):
 
 
 if __name__ == "__main__":
-    asyncio.run(
-        main("5EZVvsHMrKCFKp5NYNoTyDjTjetoVo1Z4UNNbTwJf1GfN6Xm", "visitor id"))
+    site_url = 'https://www.twickets.live/app/block/174375673873595,1'
+    site_key = '5EZVvsHMrKCFKp5NYNoTyDjTjetoVo1Z4UNNbTwJf1GfN6Xm'
+    visitor_id = 'visitor id'
+    main(site_url, site_key, visitor_id)

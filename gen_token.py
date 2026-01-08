@@ -11,13 +11,13 @@ from base64 import b64encode
 
 def _encrypt_text(plain_text: str):
     public_key_base64 = """-----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmEpX9Tqve86xUQcSCAX1
-    2S2XsivOzZYLe7BwhlkyLrc9tNN7OqHg8SEQA0z7RCvJPSvB5gfd0G/VHtMzDVH/
-    iNuaU3sz/4Vi4mVOG/dQ1C2R2AZYu581TCL2NFVZbNK79KhDjB9kXF6ufBsAU+W4
-    Hz7myBFBWHS5FNGf1QGSBDAPL1zsSaEv9HqDggMx5BH+1ibiU06aNobUpT179uIe
-    Uxf0yki3pNohIUQC8JChu4FgNYUZTBeZ1OYIV9bqzfZR3pQH7kssXlePH06d+dkb
-    e4k7xwu95/R5Nal5d2uA8iLO5bczJac+2whEHs1u+mUWgxBWmJXi4t9iwUvghaSI
-    KQIDAQAB
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyGWbPYHCppJ2rtB1FMI1
+    4kx0QwXAf96U5yIeNCPHmXcL7wrZ1TxejINR7Q7gsEzphWqQCpKhpvhdukofdKPA
+    IoUAcYUZ4AK4lTzBn7KRo/KNszcB+8fceNk17eVUiR+yM2Qw60v1hIwj6kKMWaXl
+    e4mvtDEVr6uZsaiMRNE8mo9Ojjf2On7gMP8FBCv7C8L7scsRHlq0CgSugdL3vtm7
+    aT0HYq1mhVYQXKs+TGsEtwrGSORimYnzMIR8BDxIFsL+H6DaC0SXtPfH2RBw5/mL
+    3U9t05k0xjDeQ0BvDuto1EdmAFFEPNExlCy7JbgkrNEMIfQtP/ytgazd+4UidQO/
+    EwIDAQAB
     -----END PUBLIC KEY-----
     """
 
@@ -57,4 +57,5 @@ def generate_token(user_addr: str, user_agent: str):
         indent=None,
         separators=(",", ":")
     )
+    print("token:", token)
     return _encrypt_text(token)
