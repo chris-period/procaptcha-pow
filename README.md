@@ -1,6 +1,13 @@
 # procaptcha-pow
-poc: procaptcha pow (prosopo.io) demo page
 
-simple writeup on how I am going about on solving POW challenge for procaptcha.
+Proof-of-concept for the captcha provided by https://prosopo.io/.
 
-dump files, prob explain them some other time. still reversing some things to know as much as i can
+All this project does is:
+ - visit twickets.live 
+ - grabs the page data and parses it to binary
+ - generates a sr25519 polka address
+ - requests the captcha for "pow" challenge tyoe
+ - runs the pow challenge and submits it
+ - generates a working token
+
+Using https://twickets.live because it happened to contain this captcha challenge, no other reason.
