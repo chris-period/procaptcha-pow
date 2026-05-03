@@ -13,12 +13,13 @@ from Crypto.Random import get_random_bytes
 
 def _encrypt_text(plain_text: str):
     public_key_b64 = (
-        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtHsKhnISsZXRQiA1qyJlsEdx"
-        "7fZTBUgveXzXaEMZVD0j7Q6PugbLOammnl3XqFXQCz/yaKRrg9tkq+XCGHYOKfz7TyrUNd"
-        "JH84fzjMqW0rMgAGNaRcwU3BaPEnHJxUYwGu3YhybnCJOMy6V2E37ttezSDGRubC1E2Fpd"
-        "LjdM1T+60+l2WyBC9Fb3zPtGO2pDTqmV7dRUuvSHrqMeS9yUzoMmBX6TZygIJ6lGtmOOGq"
-        "bnzl70fxks31+32oailU3WnpbqavvrvN23DBsW6m+Cw51+NjDE5YGuHUfwTZb0ym8GnhmF"
-        "3wANc73BQW6ibQiTAKVH1oaRHj2itYMX8YCbYQIDAQAB"
+        'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyt8ZFCn3aTxZVNv2WKxX'
+        '4GSUFx4RvOC4NBhFiMgGpPQ3S4Hs104DyZFSs+nCpiLoiN/StFYUM1dchv69it1x'
+        'ObGFTX0A/8TUdT0zvJPsfLJgicCMgmpSX/vZZZzJALl/hitxPUtyp40J7snP8+jG'
+        'RjxWM0Y5bVVlIPL+OqJzdnAA7MYGS7nPOAEYAh1rgug007cBzpfszBQGYlvbjPCH'
+        '6a88XOND2LsxLeol/2Q7rgXDgNCIW3LbPELGCDZ6UDMjots/bbCTaqQlZfagUDaD'
+        'G1fxi+T2PFtAVaqFE2/UXFg0ssYJmscbQth7y8HHTFPLcJc7JM94LTvK+k8U2Qgx'
+        'pwIDAQAB'
     )
 
     rsa_key = RSA.import_key(base64.b64decode(public_key_b64))
@@ -62,10 +63,13 @@ def generate_html_hash(contents: str):
 def generate_token(user_addr: str, user_agent: str):
     rand_float = min(random.random() * 0.3, 1)
     user_agent_encrypt = hash_user_agent(user_agent)
-    details = f"{user_addr}|{transform_float(rand_float)}|{user_agent_encrypt}|0|0"
+    details = f'{user_addr}|{transform_float(rand_float)}|{user_agent_encrypt}|0|0|0000000000'
+
     a = secrets.randbits(16) % 2001
     token = json.dumps(
-        obj=[int(time.time() * 1000), details, a], indent=None, separators=(",", ":")
+        [int(time.time()*1000), details, a],
+        indent=None,
+        separators=(",", ":"),
     )
-    print("token:", token)
+
     return _encrypt_text(token)

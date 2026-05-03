@@ -4,7 +4,7 @@ from polka import Polka
 from hashlib import sha256
 from gen_token import generate_token, generate_html_hash
 from gen_solution import encode_solution
-
+import random
 
 requests = Session(client_identifier="chrome_120",
                    random_tls_extension_order=True)
@@ -31,9 +31,10 @@ class Prosopo:
         self.page_url = page_url
         self.site_key = site_key
         self.user_key = user_key
+        self.page_binary = ''
         self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36'
-        self.base_url = "https://pronode7.prosopo.io/v1/prosopo"
-        self.page_binary = None
+        self.node = 'pronode7'
+        self.base_url = f"https://{self.node}.prosopo.io/v1/prosopo"
 
         self.headers = {
             'pragma': 'no-cache',
@@ -211,8 +212,11 @@ def main(page_url: str, site_key: str, visitor_id: str):
 
 
 if __name__ == "__main__":
-    site_url = 'https://www.twickets.live/app/block/640070387854481,2'
+    site_url = 'https://www.twickets.live/app/block/731003435554406,1'
     site_key = '5EZVvsHMrKCFKp5NYNoTyDjTjetoVo1Z4UNNbTwJf1GfN6Xm'
-    # visitor_id = 'visitor id'
-    visitor_id = '1'*20
+    visitor_id = 'visitor id'
+
+    # visitor_id has to be len() = 20
+    # and has to be unique:
+    visitor_id = '%020x' % random.randrange(16**20)
     main(site_url, site_key, visitor_id)
