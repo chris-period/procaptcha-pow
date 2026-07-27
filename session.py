@@ -95,6 +95,8 @@ class Prosopo:
             'headHash': head_hash,
             'dapp': self.site_key,
             'user': self.user_key,
+            'mode': 'visible',
+            'currentUrl': self.page_url,
         }
 
         response = requests.post(
@@ -212,7 +214,7 @@ def main(page_url: str, site_key: str, visitor_id: str):
 
 
 if __name__ == "__main__":
-    site_url = 'https://www.twickets.live/app/block/731003435554406,1'
+    site_url = 'https://www.twickets.live/app/block/446453262399888,1'
     site_key = '5EZVvsHMrKCFKp5NYNoTyDjTjetoVo1Z4UNNbTwJf1GfN6Xm'
     visitor_id = 'visitor id'
 

@@ -13,14 +13,15 @@ from Crypto.Random import get_random_bytes
 
 def _encrypt_text(plain_text: str):
     public_key_b64 = (
-        'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyt8ZFCn3aTxZVNv2WKxX'
-        '4GSUFx4RvOC4NBhFiMgGpPQ3S4Hs104DyZFSs+nCpiLoiN/StFYUM1dchv69it1x'
-        'ObGFTX0A/8TUdT0zvJPsfLJgicCMgmpSX/vZZZzJALl/hitxPUtyp40J7snP8+jG'
-        'RjxWM0Y5bVVlIPL+OqJzdnAA7MYGS7nPOAEYAh1rgug007cBzpfszBQGYlvbjPCH'
-        '6a88XOND2LsxLeol/2Q7rgXDgNCIW3LbPELGCDZ6UDMjots/bbCTaqQlZfagUDaD'
-        'G1fxi+T2PFtAVaqFE2/UXFg0ssYJmscbQth7y8HHTFPLcJc7JM94LTvK+k8U2Qgx'
-        'pwIDAQAB'
+        'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1bQ3vLovnJwihXsjqd1W'
+        'qn03PgUX4hQMaIds4cab4dm1rMaZ0Ak+bi77HJk+UK5wxGbym4m+GY57cCjf2TSG'
+        'b0HVG/PO6Yz1y8CFGiLkc5tAd+CgvhqlgwDiPvOp88IHkoyEnwoQzh7Ee/yKdbVI'
+        'yuedaPtTkc3VdIP7MTuhfwWvik3Uhjn5BvSzc0F9yw+Npl4lSZPXdd4932VKZc8s'
+        'JZY4JQt772ysYN/SKqk9K7J+lQ/FTdgxy0QUNJWyScAv0SyLmYpWiDO6MeLUNGqE'
+        '8dpRepT1/76o4L1gJZFPRMzqEm8VXGOrez5VXTqLfk1ma4Gj+YFV6HH9/zAzwXYh'
+        'TwIDAQAB'
     )
+
 
     rsa_key = RSA.import_key(base64.b64decode(public_key_b64))
 
