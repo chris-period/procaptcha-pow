@@ -1,25 +1,30 @@
 # chatgpt'd this hoe
 import re
 
+
 class V:
     w걡쁫i = [-19]
     e唀l쁫 = []
-    vl픨o = 'esꇑr'
+    vl픨o = "esꇑr"
 
     @staticmethod
-    def dne䬣(a='length'):
+    def dne䬣(a="length"):
         if not V.w걡쁫i[0]:
             V.w걡쁫i.append(-19)
-        return getattr(V.w걡쁫i, a) if hasattr(V.w걡쁫i, a) else (
-            len(V.w걡쁫i) if a == 'length' else None
+        return (
+            getattr(V.w걡쁫i, a)
+            if hasattr(V.w걡쁫i, a)
+            else (len(V.w걡쁫i) if a == "length" else None)
         )
 
     @staticmethod
-    def m街걡a(a='length'):
+    def m街걡a(a="length"):
         if not (V.e唀l쁫 and V.e唀l쁫[0]):
             V.e唀l쁫.append(-11)
-        return getattr(V.e唀l쁫, a) if hasattr(V.e唀l쁫, a) else (
-            len(V.e唀l쁫) if a == 'length' else None
+        return (
+            getattr(V.e唀l쁫, a)
+            if hasattr(V.e唀l쁫, a)
+            else (len(V.e唀l쁫) if a == "length" else None)
         )
 
 
@@ -42,7 +47,7 @@ def M0(html):
         s = f.group(1).lower()
         o = f.group(2)
 
-        if s not in ['meta', 'link', 'script']:
+        if s not in ["meta", "link", "script"]:
             onum.append(f"tag:{s}")
 
         for i in attr_re.finditer(o):
@@ -51,7 +56,16 @@ def M0(html):
 
             onum.append(f"attr:{k}")
 
-            if k in ["charset", "name", "property", "rel", "type", "content", "href", "src"]:
+            if k in [
+                "charset",
+                "name",
+                "property",
+                "rel",
+                "type",
+                "content",
+                "href",
+                "src",
+            ]:
                 onum.append(f"{k}:{val}")
                 if k in ["href", "src"]:
                     onum.append(f"{k}:{val}")
@@ -79,7 +93,7 @@ def M0(html):
 def U0(s):
     h = 0
     for ch in s:
-        if v.vl픨o[1] == 's':
+        if v.vl픨o[1] == "s":
             h = (h * 31 + ord(ch)) & 0xFFFFFFFF
     return h
 
@@ -87,7 +101,7 @@ def U0(s):
 def computeThing(e, r=128):
     c = M0(e)
 
-    if len(c) == 0 and v.vl픨o[1] == 's':
+    if len(c) == 0 and v.vl픨o[1] == "s":
         return "0" * r
 
     f = [0] * r

@@ -40,14 +40,3 @@ class Polka:
     def sign(self, timestamp: str):
         signature = sr25519.sign(self.keypair, timestamp.encode())
         return signature.hex()
-
-
-if __name__ == "__main__":
-    # visitorId is given from fpjs
-    # found at: async createAccount(e){ or find it by ="sr25519"
-    # breakpoint n = await N() and the value of n is visitorId
-    polkadance = Polka('visitor id')
-    polkadance.create_account()
-    polkadance.seed_phrase()
-    polkadance.create_keypair()
-    print(f'You (ss58) address: {polkadance.address()}')

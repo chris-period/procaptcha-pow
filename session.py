@@ -2,13 +2,16 @@ from page_tags import computeThing
 from tls_client import Session
 from polka import Polka
 from hashlib import sha256
-from gen_token import generate_token, generate_html_hash
+from gen_token import (
+    generate_token,
+    generate_html_hash,
+    generate_behavior_data,
+    generate_salt,
+)
 from gen_solution import encode_solution
 import random
 
-requests = Session(client_identifier="chrome_120",
-                   random_tls_extension_order=True)
-
+requests = Session(client_identifier="chrome_120", random_tls_extension_order=True)
 
 class Pow:
     @staticmethod
@@ -31,59 +34,58 @@ class Prosopo:
         self.page_url = page_url
         self.site_key = site_key
         self.user_key = user_key
-        self.page_binary = ''
-        self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36'
-        self.node = 'pronode7'
+        self.page_binary = ""
+        self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+        self.node = "pronode7"
         self.base_url = f"https://{self.node}.prosopo.io/v1/prosopo"
 
         self.headers = {
-            'pragma': 'no-cache',
-            'cache-control': 'no-cache',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-ch-ua': '"Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"',
-            'sec-ch-ua-mobile': '?0',
-            'prosopo-site-key': self.site_key,
-            'prosopo-user': self.user_key,
-            'dnt': '1',
-            'content-type': 'application/json',
-            'user-agent': self.user_agent,
-            'accept': '*/*',
-            'origin': 'https://www.twickets.live',
-            'sec-fetch-site': 'cross-site',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-dest': 'empty',
-            'referer': 'https://www.twickets.live/',
-            'accept-encoding': 'gzip, deflate, br, zstd',
-            'priority': 'u=1, i',
-            'accept-language': 'en-US,en;q=0.9',
+            "pragma": "no-cache",
+            "cache-control": "no-cache",
+            "sec-ch-ua-platform": '"Windows"',
+            "sec-ch-ua": '"Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"',
+            "sec-ch-ua-mobile": "?0",
+            "prosopo-site-key": self.site_key,
+            "prosopo-user": self.user_key,
+            "dnt": "1",
+            "content-type": "application/json",
+            "user-agent": self.user_agent,
+            "accept": "*/*",
+            "origin": "https://www.twickets.live",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "referer": "https://www.twickets.live/",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "priority": "u=1, i",
+            "accept-language": "en-US,en;q=0.9",
         }
 
     def page_contents(self):
         response = requests.get(
             self.page_url,
             headers={
-                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                'accept-language': 'en-US,en;q=0.9',
-                'cache-control': 'no-cache',
-                'dnt': '1',
-                'pragma': 'no-cache',
-                'priority': 'u=0, i',
-                'referer': 'https://www.twickets.live/',
-                'sec-ch-ua': '"Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"',
-                'sec-ch-ua-mobile': '?0',
-                'sec-ch-ua-platform': '"Windows"',
-                'sec-fetch-dest': 'document',
-                'sec-fetch-mode': 'navigate',
-                'sec-fetch-site': 'same-origin',
-                'sec-fetch-user': '?1',
-                'upgrade-insecure-requests': '1',
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36',
-
-            }
+                "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                "accept-language": "en-US,en;q=0.9",
+                "cache-control": "no-cache",
+                "dnt": "1",
+                "pragma": "no-cache",
+                "priority": "u=0, i",
+                "referer": "https://www.twickets.live/",
+                "sec-ch-ua": '"Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"',
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": '"Windows"',
+                "sec-fetch-dest": "document",
+                "sec-fetch-mode": "navigate",
+                "sec-fetch-site": "same-origin",
+                "sec-fetch-user": "?1",
+                "upgrade-insecure-requests": "1",
+                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
+            },
         )
 
         if response.status_code != 200:
-            raise Exception("bad response code from \"page_contents\"")
+            raise Exception('bad response code from "page_contents"')
 
         self.page_binary = computeThing(response.text)
 
@@ -91,12 +93,12 @@ class Prosopo:
         head_hash = generate_html_hash(self.page_binary)
 
         json_data = {
-            'token': generate_token(self.user_key, self.user_agent),
-            'headHash': head_hash,
-            'dapp': self.site_key,
-            'user': self.user_key,
-            'mode': 'visible',
-            'currentUrl': self.page_url,
+            "token": generate_token(self.user_key, self.user_agent),
+            "headHash": head_hash,
+            "dapp": self.site_key,
+            "user": self.user_key,
+            "mode": "visible",
+            "currentUrl": self.page_url,
         }
 
         response = requests.post(
@@ -148,7 +150,8 @@ class Prosopo:
                 "user": self.user_key,
                 "dapp": self.site_key,
                 "nonce": nonce,
-                "verifiedTimeout": 120000,
+                "salt": generate_salt(),
+                "behavioralData": generate_behavior_data(),
             },
         )
 
@@ -191,7 +194,7 @@ def main(page_url: str, site_key: str, visitor_id: str):
 
     session_id = captcha.get_session_id()
     challenge = captcha.get_challenge(session_id)
-    print('challenge:', challenge)
+    print("challenge:", challenge)
     nonce = Pow.checkPrefix(challenge["challenge"], challenge["difficulty"])
     signature = signer.sign(challenge["timestamp"])
 
@@ -214,11 +217,10 @@ def main(page_url: str, site_key: str, visitor_id: str):
 
 
 if __name__ == "__main__":
-    site_url = 'https://www.twickets.live/app/block/446453262399888,1'
-    site_key = '5EZVvsHMrKCFKp5NYNoTyDjTjetoVo1Z4UNNbTwJf1GfN6Xm'
-    visitor_id = 'visitor id'
+    site_url = "https://www.twickets.live/app/block/954960210381369,1"
+    site_key = "5EZVvsHMrKCFKp5NYNoTyDjTjetoVo1Z4UNNbTwJf1GfN6Xm"
 
     # visitor_id has to be len() = 20
     # and has to be unique:
-    visitor_id = '%020x' % random.randrange(16**20)
+    visitor_id = "%020x" % random.randrange(16**20)
     main(site_url, site_key, visitor_id)
